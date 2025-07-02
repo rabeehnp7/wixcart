@@ -1,0 +1,65 @@
+{% extends 'blank_layout.html' %}
+{% load static %}
+{% load multiply %}
+{% load cart_total %}
+{% block content %}
+<div class="small-container cart-page">
+    <table>
+        {% if messages %}
+        {% for message in messages %}
+        <p class="{{message.tags}}">{{message}}</p>
+        {% endfor %}
+        {% endif %}
+        {% if cart and cart.cart_items.all %}
+        <tbody>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+            {% for item in cart.cart_items.all %}
+            <tr>
+                <td>
+                    <div class="cart-info">
+                        <img src="{{ item.product.image.url }}">
+                        <div>
+                            <p>{{item.product.title}}</p>
+                            <small>Price: ${{item.product.price}}</small>
+                            <br>
+                            <a href="{% url 'remove_cart_product' item.id %}">Remove</a>
+                        </div>
+                    </div>
+                </td>
+                <td><input type="number" value={{item.quantity}}></td>
+                <td>{% multiply item.product.price item.quantity %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="total-price">
+        <table>
+            <tbody>
+                <tr>
+                    <td>Total</td>
+                    <td>{% cart_total cart%}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>
+                        <form action="{% url 'checkout' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="total" value="{% cart_total cart %}" >
+                        <button type="submit" class="btn">Checkout</button>
+                    </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    Cart is Empty
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

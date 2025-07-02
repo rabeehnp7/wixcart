@@ -1,0 +1,36 @@
+{% extends 'blank_layout.html' %}
+{% load static %}
+{% load multiply %}
+{% load cart_total %}
+{% load order_status %}
+{% block content %}
+<div class="small-container cart-page">
+    <table>
+        {% if messages %}
+        {% for message in messages %}
+        <p class="{{message.tags}}">{{message}}</p>
+        {% endfor %}
+        {% endif %}
+        {% if orders %}
+        <tbody>
+            <tr>
+                <th>Order Id</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>status</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>{{order.id}}</td>
+                <td>{{order.created_at}}</td>
+                <td>{{order.total_price}}</td>
+                <td>{% order_status order.order_status %}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <p>No Orders available</p>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

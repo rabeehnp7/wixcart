@@ -2,12 +2,16 @@ from django.shortcuts import render,redirect
 from . models import Order,OrderItem
 from products.models import Product
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 def get_orders(request):
     user=request.user
     customer=user.user_details
     all_orders=Order.objects.filter(customer=customer).exclude(order_status=Order.CART_STAGE)
     return render(request,'orders.html',{'orders':all_orders})
+
+@login_required
 def checkout(request):
     try:
         user=request.user

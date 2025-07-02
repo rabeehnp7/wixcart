@@ -30,6 +30,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*'] 
 
+LOGIN_URL = 'account'
+
 
 # Application definition
 

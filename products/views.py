@@ -1,6 +1,12 @@
 from django.shortcuts import render,get_object_or_404
 from . models import Product
 from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.core.management import call_command
+
+def run_migrate(request):
+    call_command('migrate')
+    return HttpResponse("Migration complete.")
 
 # Create your views here.
 def index(request):

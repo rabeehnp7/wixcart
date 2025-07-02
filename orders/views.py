@@ -31,6 +31,7 @@ def checkout(request):
         messages.error(request,status_message)
     return redirect('home')
 
+@login_required
 def show_cart(request):
     user=request.user
     customer=user.user_details

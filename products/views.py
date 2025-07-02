@@ -4,9 +4,10 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.core.management import call_command
 
-def run_migrate(request):
-    call_command('migrate')
-    return HttpResponse("Migration complete.")
+def run_collectstatic(request):
+    call_command('collectstatic', '--noinput')
+    return HttpResponse("Collectstatic complete.")
+
 
 # Create your views here.
 def index(request):

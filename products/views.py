@@ -3,11 +3,13 @@ from . models import Product
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.core.management import call_command
+from django.contrib.auth.models import User
 
 def run_collectstatic(request):
-    call_command('collectstatic', '--noinput')
-    return HttpResponse("Collectstatic complete.")
-
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'rabeeh.peridot@gmail.com', '123')
+        return HttpResponse("Superuser created.")
+    return HttpResponse("Superuser already exists.")
 
 # Create your views here.
 def index(request):
